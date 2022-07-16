@@ -12,18 +12,7 @@
     id="main-sidebar"
   >
     <v-list dense nav>
-      <!---USer Area -->
-      <v-list-item two-line class="px-0">
-        <v-list-item-avatar>
-          <img src="https://randomuser.me/api/portraits/men/81.jpg" />
-        </v-list-item-avatar>
 
-        <v-list-item-content>
-          <v-list-item-title>Dohn Deo</v-list-item-title>
-          <v-list-item-subtitle class="caption">Webdesigner</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-      <!---USer Area -->
       <!---Sidebar Items -->
       <v-list-item
         v-for="item in items"
@@ -58,35 +47,46 @@ export default {
   },
   data: () => ({
     items: [
-      {
-        title: "Dashboard",
-        icon: "mdi-view-dashboard",
-        to: "/dashboard/basic-dashboard"
-      },
+      // {
+      //   title: "Dashboard",
+      //   icon: "mdi-view-dashboard",
+      //   to: "/dashboard/basic-dashboard"
+      // },
 
       {
         title: "Profile",
-        icon: "mdi-account-circle",
+        icon: "mdi mdi-account-check",
         to: "/pages/profile"
       },
-
       {
-        title: "Alerts",
-        icon: "mdi-alert",
-        to: "/pages/alerts"
+        title: "Login",
+        icon: "mdi-account-key",
+        to: "/pages/Login"
+      },
+      {
+        title: "Register",
+        icon: "mdi-account-circle",
+        to: "/pages/register"
       },
 
-      {
-        title: "Icons",
-        icon: "mdi-emoticon",
-        to: "/pages/icons"
-      },
 
-      {
-        title: "Basic Table",
-        icon: "mdi-table-column-width",
-        to: "/pages/tables-simple"
-      }
+      // {
+      //   title: "Alerts",
+      //   icon: "mdi-alert",
+      //   to: "/pages/alerts"
+      // },
+      //
+      // {
+      //   title: "Icons",
+      //   icon: "mdi-emoticon",
+      //   to: "/pages/icons"
+      // },
+      //
+      // {
+      //   title: "Basic Table",
+      //   icon: "mdi-table-column-width",
+      //   to: "/pages/tables-simple"
+      // }
     ]
   }),
   computed: {

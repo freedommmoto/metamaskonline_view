@@ -9,40 +9,25 @@ export default new Router({
     routes: [
         {
             path: '/',
-            redirect: 'dashboard/basic-dashboard',
+            redirect: 'pages/register',
             component: () => import('@/layouts/Layout'),
             children: [
-                // Components
-                {
-                    name: 'Alerts',
-                    path: 'pages/alerts',
-                    component: () => import('@/views/pages/Alerts'),
-                },
-
                 {
                     name: 'Profile',
                     path: 'pages/profile',
                     component: () => import('@/views/pages/Profile'),
                 },
-
                 {
-                    name: 'Icons',
-                    path: 'pages/icons',
-                    component: () => import('@/views/pages/Icons'),
+                    name: 'Register',
+                    path: 'pages/register',
+                    component: () => import('@/views/pages/Register'),
                 },
-
                 {
-                    name: 'TableSimple',
-                    path: 'pages/tables-simple',
-                    component: () => import('@/views/pages/TableSimple'),
+                    name: 'Login',
+                    path: 'pages/Login',
+                    component: () => import('@/views/pages/Login'),
                 },
-
-                {
-                    name: 'Dashboard',
-                    path: 'dashboard/basic-dashboard',
-                    component: () => import('@/views/dashboard/BasicDashboard'),
-                },
-
+                { path: "*",  redirect: 'pages/register' }
             ]
         },
 
