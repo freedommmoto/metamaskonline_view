@@ -30,6 +30,5 @@ export default new Router({
                 { path: "*",  redirect: 'pages/register' }
             ]
         },
-
     ],
 })

@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import { config } from '../config';
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        api_url: config.$api_url,
         Sidebar_drawer: null,
         Customizer_drawer: false,
         SidebarColor: 'white',
