@@ -16,20 +16,26 @@
             <div>
               you can enter group line with this QR code.
             </div>
+
             <img src="https://qr-official.line.me/sid/M/768mexlo.png?shortenUrl=true">
+
             <v-text-field
-              v-model="dtext"
+              v-model="wallet"
               label="you metamask wallet eg 0x75956f45E5439C15441868F732D09ca8d85133E5"
               filled
               background-color="transparent"
+              :rules="walletRules"
             ></v-text-field>
+
             <v-text-field
               type="username"
               v-model="username"
               label="username e.g. patara"
               filled
               background-color="transparent"
+              :rules="userNameRules"
             ></v-text-field>
+
             <v-text-field
                 v-model="password"
                 label="Password"
@@ -38,7 +44,6 @@
                 type="password"
                 :rules="passwordRules"
             />
-
 
             <v-text-field
                 v-model="confirmPassword"
@@ -49,22 +54,36 @@
                 :rules="confirmPasswordRules"
             />
 
-
-            <v-btn class="text-capitalize mt-5 element-0" color="success">Submit</v-btn>
+            <v-btn class="text-capitalize mt-5 element-0" color="success" @click="checkBeforeSend()">Submit</v-btn>
           </v-card-text>
         </v-card>
+
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
+import swal from 'sweetalert';
+import {mapState} from "vuex";
+
 export default {
   name: "Profile",
   data() {
     return {
+      wallet:'',
+      username:'',
       password: '',
       confirmPassword: '',
+      userNameRules: [
+        (value) => !!value || 'Please type username.',
+        (value) => (value && value.length >= 4) || 'minimum 4 characters',
+      ],
+      walletRules: [
+        (value) => !!value || 'Please type wallet.',
+        (value) => (value && value.length >= 38) || 'minimum 38 characters',
+      ],
       passwordRules: [
         (value) => !!value || 'Please type password.',
         (value) => (value && value.length >= 6) || 'minimum 6 characters',
@@ -76,34 +95,42 @@ export default {
       ],
     }
   },
-  //
-  // data: () => ({
-  //   dtext: "0x75956f45E5439C15441868F732D09ca8d85133E5",
-  //   emailtext: "",
-  //   password: "22",
-  //   confirmPassword: "",
-  //   disableinput: "",
-  //   checkbox1: "",
-  //   checkbox2: "",
-  //   checkbox3: "",
-  //   show1: true,
-  //   passwordRules: [
-  //     (value) => !!value || 'Please type password.',
-  //     (value) => (value && value.length >= 6) || 'minimum 6 characters',
-  //   ],
-  //   confirmPasswordRules: [
-  //     (value) => !!value || 'type confirm password',
-  //     (value) =>
-  //         value === this.password || 'The password confirmation does not match.',
-  //   ],
-  //   // rules: {
-  //   //   matchingPasswords: v => v === this.password || "The password confirmation does not match.",
-  //   //   required: value => !!value || "Required.",
-  //   //   min: v => v.length >= 8 || "Min 8 characters!",
-  //   // },
-  // }),
+  computed: {
+    ...mapState(["api_url"]),
+  },
   methods: {
-
+    checkBeforeSend(){
+      if ( this.username.length < 4){
+        swal( "Please enter username more then 4");
+        return;
+      } else if ( this.password.length < 6){
+        swal( "Please enter password more then 6");
+        return;
+      } else if ( this.wallet.length < 38){
+        swal( "Please enter wallet more then 38");
+        return;
+      }
+      this.addUser()
+    },
+    async addUser() {
+      try {
+        const config = {headers: {
+            'Content-Type': 'application/json'
+          }}
+        const json = JSON.stringify({ wallet: this.wallet,username: this.username,password: this.password });
+        const res = await axios.post(this.api_url + "/user/new/",json , config)
+        console.log(res)
+        if (!res.data.id){
+          swal( "error case :"+res.data);
+        }else{
+         // swal( "id is  :"+res.data.id);
+          localStorage.setItem('userID', res.data.id)
+          this.$router.push('Profile')
+        }
+      } catch ({message}) {
+        console.log(message)
+      }
+    }
   },
   components: {}
 };
