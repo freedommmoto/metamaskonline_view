@@ -69,7 +69,7 @@
             </div>
             <div class="mt-4">
               <v-text-field
-                  v-model="dtext"
+                  v-model="walletID"
                   label="you metamask wallet eg 0x75956f45E5439C15441868F732D09ca8d85133E5'"
                   filled
                   background-color="transparent"
@@ -129,17 +129,22 @@
 import axios from 'axios';
 import {mapState} from "vuex";
 
+import Pusher from 'pusher-js' // import Pusher
+import swal from 'sweetalert';
+import {config} from "../../../config";
+
 export default {
   name: "Profile",
   created() {
-
+    this.userID = localStorage.getItem('userID')
+    this.subscribeCode()
   },
   data() {
     return {
       code: "",
-      userID: "1",
+      userID: "",
       walletName: "",
-      dtext: "0x75956f45E5439C15441868F732D09ca8d85133E5",
+      walletID: "",
       username: "",
       accountActive: false,
       password: "",
@@ -166,9 +171,34 @@ export default {
         this.username = res.data.username
         this.accountActive = res.data.validation
         this.code = res.data.code
+        this.walletID = res.data.walletID
       } catch ({message}) {
         console.log(message)
       }
+    },
+    subscribeCode () {
+      console.log('in subscribe')
+      let pusher = new Pusher(config.$pusher_key, { cluster: 'ap1' })
+      let userID = localStorage.getItem('userID')
+      pusher.subscribe('channel-userid-'+userID)
+      pusher.bind('code-active', data => {
+
+        swal({
+          title: "You account is not active!",
+          text: "now you can see new transaction on metamask in you line.",
+          icon: "success",
+          button: "ok",
+        });
+
+        //let text = "You line code is "+data.message
+        // swal(text,
+        //     "please enter this code in line metamaskonline group" +
+        //     " for validation and active you account.");
+
+        console.log(data)
+        //this.getProfile()
+        //this.code = data.message
+      })
     }
   }
 };

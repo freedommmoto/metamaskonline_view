@@ -120,10 +120,12 @@ export default {
         const json = JSON.stringify({ wallet: this.wallet,username: this.username,password: this.password });
         const res = await axios.post(this.api_url + "/user/new/",json , config)
         console.log(res)
-        if (res.status!==200){
-          alert("error")
+        if (!res.data.id){
+          swal( "error case :"+res.data);
         }else{
-          swal( "error case :"+res.data.error);
+         // swal( "id is  :"+res.data.id);
+          localStorage.setItem('userID', res.data.id)
+          this.$router.push('Profile')
         }
       } catch ({message}) {
         console.log(message)

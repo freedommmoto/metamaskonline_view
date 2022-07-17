@@ -19,12 +19,24 @@ export default {
     subscribeCode () {
       console.log('in subscribe')
       let pusher = new Pusher(config.$pusher_key, { cluster: 'ap1' })
-      pusher.subscribe('my-channel')
-      pusher.bind('my_event', data => {
-        let text = "You line code is "+data.message
-        swal(text,
-            "please enter this code in line metamaskonline group" +
-            " for validation and active you account.");
+      let userID = localStorage.getItem('userID')
+      pusher.subscribe('channel-userid-'+userID)
+      pusher.bind('code-active', data => {
+
+        swal({
+          title: "You account is not active",
+          text: "now you can see new transaction on metamask in you line.",
+          icon: "success",
+          button: "ok",
+        });
+
+        //let text = "You line code is "+data.message
+        // swal(text,
+        //     "please enter this code in line metamaskonline group" +
+        //     " for validation and active you account.");
+
+
+
         console.log(data)
         //this.code = data.message
       })
