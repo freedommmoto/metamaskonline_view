@@ -73,38 +73,38 @@
               <v-btn style="margin-left: 10px" class="text-capitalize mt-5 element-0" color="accent">remove wallet</v-btn>
           </v-card-text>
 
-          <v-divider></v-divider>
-          <v-card-text>
-            <h3 class="title blue-grey--text text--darken-2 font-weight-regular">Metamask Wallet (backup)</h3>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div class="mt-4">
-              <v-select :items="items" disabled value="bsc-testnet" filled label="Select Chain" background-color="transparent"></v-select>
-            </div>
-            <div class="mt-4">
-              <v-text-field
-                  v-model="walletName"
-                  label="you wallet name eg patara wallet"
-                  filled
-                  background-color="transparent"
-              ></v-text-field>
-            </div>
-            <div class="mt-4">
-              <v-text-field
-                  v-model="dtext"
-                  label="you metamask wallet eg 0x75956f45E5439C15441868F732D09ca8d85133E5'"
-                  filled
-                  background-color="transparent"
-              ></v-text-field>
-            </div>
-            <div class="mt-4">
-              <div style="float: left;margin-right: 4px;margin-left: 10px"><input type="checkbox" id="checkbox" v-model="checked" /></div>
-              <h4 style="margin-right: 10px"><label for="checkbox">Follow alert this wallet</label></h4>
-            </div>
-            <v-btn class="text-capitalize mt-5 element-0" color="success">update wallet</v-btn>
-            <v-btn style="margin-left: 10px" class="text-capitalize mt-5 element-0" color="accent">remove wallet</v-btn>
-          </v-card-text>
+<!--          <v-divider></v-divider>-->
+<!--          <v-card-text>-->
+<!--            <h3 class="title blue-grey&#45;&#45;text text&#45;&#45;darken-2 font-weight-regular">Metamask Wallet (backup)</h3>-->
+<!--          </v-card-text>-->
+<!--          <v-divider></v-divider>-->
+<!--          <v-card-text>-->
+<!--            <div class="mt-4">-->
+<!--              <v-select :items="items" disabled value="bsc-testnet" filled label="Select Chain" background-color="transparent"></v-select>-->
+<!--            </div>-->
+<!--            <div class="mt-4">-->
+<!--              <v-text-field-->
+<!--                  v-model="walletName"-->
+<!--                  label="you wallet name eg patara wallet"-->
+<!--                  filled-->
+<!--                  background-color="transparent"-->
+<!--              ></v-text-field>-->
+<!--            </div>-->
+<!--            <div class="mt-4">-->
+<!--              <v-text-field-->
+<!--                  v-model="dtext"-->
+<!--                  label="you metamask wallet eg 0x75956f45E5439C15441868F732D09ca8d85133E5'"-->
+<!--                  filled-->
+<!--                  background-color="transparent"-->
+<!--              ></v-text-field>-->
+<!--            </div>-->
+<!--            <div class="mt-4">-->
+<!--              <div style="float: left;margin-right: 4px;margin-left: 10px"><input type="checkbox" id="checkbox" v-model="checked" /></div>-->
+<!--              <h4 style="margin-right: 10px"><label for="checkbox">Follow alert this wallet</label></h4>-->
+<!--            </div>-->
+<!--            <v-btn class="text-capitalize mt-5 element-0" color="success">update wallet</v-btn>-->
+<!--            <v-btn style="margin-left: 10px" class="text-capitalize mt-5 element-0" color="accent">remove wallet</v-btn>-->
+<!--          </v-card-text>-->
 
         </v-card>
       </v-col>
@@ -113,9 +113,11 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: "Profile",
-
+  created () {
+  },
   data: () => ({
     code:"1234",
     walletName:"",
@@ -134,6 +136,13 @@ export default {
     },
     items: ["bsc-testnet", "bsc", "eth"]
   }),
-  components: {}
+  components: {},
+  mounted () {
+    axios
+        .post('http://localhost:8888/test')
+        .then(response => (this.info = response))
+  },
+  methods: {
+  }
 };
 </script>

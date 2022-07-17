@@ -2,5 +2,13 @@ module.exports = {
     "transpileDependencies": [
         "vuetify"
     ],
-    publicPath: '/'
+    // publicPath: '/',
+    // devServer: {
+    //     proxy: {
+    //         "/api/*": {
+    //             target: "http://localhost:8888",
+    //             secure: false
+    //         }
+    //     }
+    // }
 }
