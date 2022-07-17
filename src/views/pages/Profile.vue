@@ -136,16 +136,14 @@ export default {
   },
   data() {
     return {
-      code: "1234",
+      code: "",
+      userID: "1",
       walletName: "",
       dtext: "0x75956f45E5439C15441868F732D09ca8d85133E5",
       username: "",
       accountActive: false,
       password: "",
-      disableinput: "",
       checkbox1: "",
-      checkbox2: "",
-      checkbox3: "",
       show1: true,
       rules: {
         required: value => !!value || "Required.",
@@ -164,9 +162,10 @@ export default {
   methods: {
     async getProfile() {
       try {
-        const res = await axios.get(this.api_url + "/user/id/1")
+        const res = await axios.get(this.api_url + "/user/id/"+this.userID)
         this.username = res.data.username
         this.accountActive = res.data.validation
+        this.code = res.data.code
       } catch ({message}) {
         console.log(message)
       }
