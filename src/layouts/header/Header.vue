@@ -47,8 +47,8 @@ export default {
       if (item==1){
         this.$router.push('profile')
       } else {
-        localStorage.removeItem('vuex');
-        this.$router.push('login')
+        localStorage.removeItem('userID');
+        this.$router.push('register')
       }
     }
   }),

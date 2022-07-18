@@ -9,6 +9,14 @@
           <v-divider></v-divider>
           <v-card-text>
             <v-text-field
+                type="text"
+                v-model="id"
+                label="user id"
+                disabled
+                filled
+                background-color="transparent"
+            ></v-text-field>
+            <v-text-field
                 type="email"
                 v-model="username"
                 label="username"
@@ -16,8 +24,9 @@
                 filled
                 background-color="transparent"
             ></v-text-field>
+
             <v-text-field
-                type="code"
+                type="text"
                 v-model="code"
                 label="you validation code is, you need to add this code in line group bot for active you wallet"
                 disabled
@@ -81,7 +90,7 @@
               <h4 style="margin-right: 10px"><label for="checkbox">Follow alert this wallet</label></h4>
             </div>
             <v-btn class="text-capitalize mt-5 element-0" color="success">update wallet</v-btn>
-            <v-btn style="margin-left: 10px" class="text-capitalize mt-5 element-0" color="accent">remove wallet 2
+            <v-btn style="margin-left: 10px" class="text-capitalize mt-5 element-0" color="accent">remove wallet
               {{ api_url }}
             </v-btn>
           </v-card-text>
@@ -168,36 +177,39 @@ export default {
     async getProfile() {
       try {
         const res = await axios.get(this.api_url + "/user/id/"+this.userID)
+        this.id = res.data.id
         this.username = res.data.username
         this.accountActive = res.data.validation
         this.code = res.data.code
         this.walletID = res.data.walletID
       } catch ({message}) {
-        console.log(message)
+        if(message == 'Request failed with status code 400'){
+          swal("you need to register first");
+        } else {
+          swal("error",message);
+        }
       }
     },
     subscribeCode () {
-      console.log('in subscribe')
       let pusher = new Pusher(config.$pusher_key, { cluster: 'ap1' })
       let userID = localStorage.getItem('userID')
+
+      if (userID < 1) {
+        this.$router.push('Register')
+        return
+      }
+
       pusher.subscribe('channel-userid-'+userID)
       pusher.bind('code-active', data => {
 
         swal({
-          title: "You account is not active!",
+          title: "You account is now active!",
           text: "now you can see new transaction on metamask in you line.",
           icon: "success",
           button: "ok",
         });
-
-        //let text = "You line code is "+data.message
-        // swal(text,
-        //     "please enter this code in line metamaskonline group" +
-        //     " for validation and active you account.");
-
         console.log(data)
-        //this.getProfile()
-        //this.code = data.message
+        this.getProfile()
       })
     }
   }

@@ -125,6 +125,14 @@ export default {
         }else{
          // swal( "id is  :"+res.data.id);
           localStorage.setItem('userID', res.data.id)
+          if (res.data.id){
+            swal({
+              title: "Your account is now registered!",
+              text: "please enter this number "+res.data.code+" in you line metamask group for active line alert function.",
+              icon: "success",
+              button: "ok",
+            });
+          }
           this.$router.push('Profile')
         }
       } catch ({message}) {
